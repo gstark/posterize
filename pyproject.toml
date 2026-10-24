@@ -8,6 +8,7 @@ name = "posterize"
 version = "0.1.0"
 description = "Convert flat-color PNGs into multi-color 3MF files for Bambu Studio"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.14"
 dependencies = [
     "Pillow",

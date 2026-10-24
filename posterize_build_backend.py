@@ -24,10 +24,13 @@ METADATA = """Metadata-Version: 2.1
 Name: posterize
 Version: 0.1.0
 Summary: Convert flat-color PNGs into multi-color 3MF files for Bambu Studio
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
 Requires-Python: >=3.14
 Requires-Dist: Pillow
 Requires-Dist: bambu3mf @ git+https://github.com/gstark/bambu3mf.git
 Requires-Dist: Jinja2
+Requires-Dist: textual>=8.2.8
 """
 
 WHEEL = """Wheel-Version: 1.0
@@ -86,6 +89,7 @@ def build_sdist(sdist_directory, config_settings=None):
     root_name = f"{NAME}-{VERSION}"
 
     files = [
+        ROOT / "LICENSE",
         ROOT / "README.md",
         ROOT / "posterize_build_backend.py",
         ROOT / "pyproject.toml",

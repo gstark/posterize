@@ -48,6 +48,7 @@ def test_build_backend_can_create_sdist(tmp_path):
         names = set(sdist.getnames())
 
     assert "posterize-0.1.0/pyproject.toml" in names
+    assert "posterize-0.1.0/LICENSE" in names
     assert "posterize-0.1.0/PKG-INFO" in names
     assert "posterize-0.1.0/posterize/__main__.py" in names
     assert "posterize-0.1.0/posterize/assets/scad/model.scad.j2" in names
