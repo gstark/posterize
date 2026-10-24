@@ -14,6 +14,8 @@ brew install --cask openscad@snapshot
 posterize uses OpenSCAD and potrace. Homebrew installs potrace with the
 formula, but OpenSCAD is only available as a cask.
 
+Run `just homebrew` to publish a release and update the formula.
+
 ## Commands
 
 Run the CLI from the project environment:
