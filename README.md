@@ -4,6 +4,16 @@ Convert flat-color PNGs into multi-color 3MF files for Bambu Studio.
 
 Architecture notes live in [docs/architecture.md](docs/architecture.md).
 
+## Install
+
+```bash
+brew install gstark/tap/posterize
+brew install --cask openscad@snapshot
+```
+
+posterize uses OpenSCAD and potrace. Homebrew installs potrace with the
+formula, but OpenSCAD is only available as a cask.
+
 ## Commands
 
 Run the CLI from the project environment:
