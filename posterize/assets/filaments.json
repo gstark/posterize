@@ -1,0 +1,77 @@
+[
+  {
+    "name": "Bamboo PLA Matte Terracotta",
+    "hex": "B15533",
+    "rgb": [177, 85, 51]
+  },
+  {
+    "name": "Bamboo PLA Matte Grass Green",
+    "hex": "61C680",
+    "rgb": [97, 198, 128]
+  },
+  {
+    "name": "Bamboo PLA Matte Dark Brown",
+    "hex": "7D6556",
+    "rgb": [125, 101, 86]
+  },
+  {
+    "name": "Bamboo PLA Matte Nardo Grey",
+    "hex": "757575",
+    "rgb": [117, 117, 117]
+  },
+  {
+    "name": "Bamboo PLA Matte Ivory White",
+    "hex": "FFFFFF",
+    "rgb": [255, 255, 255]
+  },
+  {
+    "name": "Bamboo PLA Matte Ice Blue",
+    "hex": "A3D8E1",
+    "rgb": [163, 216, 225]
+  },
+  {
+    "name": "Bamboo PLA Matte Ash Grey",
+    "hex": "9B9EA0",
+    "rgb": [155, 158, 160]
+  },
+  {
+    "name": "Bamboo PLA Matte Dark Chocolate",
+    "hex": "4D3324",
+    "rgb": [77, 51, 36]
+  },
+  { "name": "Bamboo PLA Matte Charcoal", "hex": "000000", "rgb": [0, 0, 0] },
+  {
+    "name": "Bamboo PLA Matte Desert Tan",
+    "hex": "E8DBB7",
+    "rgb": [232, 219, 183]
+  },
+  { "name": "Bamboo PLA Basic Black", "hex": "000000", "rgb": [0, 0, 0] },
+  {
+    "name": "Bamboo PLA Basic Sunflower Yellow",
+    "hex": "FEC600",
+    "rgb": [254, 198, 0]
+  },
+  {
+    "name": "Bamboo PLA Matte Lilac Purple",
+    "hex": "AE96D4",
+    "rgb": [174, 150, 212]
+  },
+  { "name": "Bamboo PLA Matte Grey", "hex": "9B9EA0", "rgb": [155, 158, 160] },
+  {
+    "name": "Bamboo PLA Matte Marine Blue",
+    "hex": "0078BF",
+    "rgb": [0, 120, 191]
+  },
+  { "name": "Bamboo PLA Scarlet Red", "hex": "DE4343", "rgb": [222, 67, 67] },
+  {
+    "name": "Bamboo PLA Mandarin Orange",
+    "hex": "F99963",
+    "rgb": [249, 153, 99]
+  },
+  { "name": "Polymaker PLA Pro Blue", "hex": "003287", "rgb": [0, 50, 135] },
+  {
+    "name": "Overture Highlight Yellow",
+    "hex": "E4FF33",
+    "rgb": [228, 255, 51]
+  }
+]

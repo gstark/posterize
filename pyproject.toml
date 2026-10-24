@@ -1,0 +1,46 @@
+[build-system]
+requires = []
+build-backend = "posterize_build_backend"
+backend-path = ["."]
+
+[project]
+name = "posterize"
+version = "0.1.0"
+description = "Convert flat-color PNGs into multi-color 3MF files for Bambu Studio"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "Pillow",
+    "bambu3mf @ git+https://github.com/gstark/bambu3mf.git",
+    "Jinja2",
+    "textual>=8.2.8",
+]
+
+[project.scripts]
+posterize = "posterize.cli:main"
+
+[dependency-groups]
+dev = [
+    "mypy",
+    "pytest",
+    "ruff",
+]
+
+[tool.ruff]
+exclude = [
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    ".worktrees",
+    "build",
+    "output",
+    "tmp",
+]
+
+[tool.ruff.lint]
+ignore = ["E402"]
+
+[tool.mypy]
+ignore_missing_imports = true

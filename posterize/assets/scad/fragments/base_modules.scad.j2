@@ -1,0 +1,163 @@
+{{ base_footprint_module }}
+module base_shape_raw() {
+    linear_extrude(height = base_height)
+        base_footprint();
+}
+
+module clipped_base_shape() {
+    if (plate_w <= {{ unclipped_plate_w }}) {
+        base_shape_raw();
+    } else {
+        intersection() {
+            tile_region(base_height + raised_height + {{ clip_z_slop_mm }});
+            base_shape_raw();
+        }
+    }
+}
+
+module clipped_color_layer(svg_file) {
+    if (plate_w <= {{ unclipped_plate_w }}) {
+        color_layer(svg_file);
+    } else {
+        intersection() {
+            tile_region(base_height + raised_height + {{ clip_z_slop_mm }});
+            color_layer(svg_file);
+        }
+    }
+}
+
+module octagon(w, h, c) {
+    polygon(points = [
+        [-w/2 + c, -h/2], [w/2 - c, -h/2], [w/2, -h/2 + c], [w/2, h/2 - c],
+        [w/2 - c, h/2], [-w/2 + c, h/2], [-w/2, h/2 - c], [-w/2, -h/2 + c]
+    ]);
+}
+
+function keyhole_position_x(position) = is_list(position) ? position[0] : position;
+function keyhole_position_slot_top(position) =
+    is_list(position) ? position[1] : tile_y0() + tile_h() - keyhole_top_margin;
+
+module keyhole_cutout(position) {
+    x_center = keyhole_position_x(position);
+    slot_top = keyhole_position_slot_top(position);
+    head_r = keyhole_head_diameter / 2;
+    circle_center_y = slot_top - keyhole_neck_length - head_r;
+    underside_z = base_height;
+    pocket_z = max(0, underside_z - keyhole_margin - keyhole_depth);
+
+    // Internal pocket: full keyhole shape (circle + head-width neck)
+    // between front and back margins. The neck is head-diameter wide
+    // so the screw head can slide up through it.
+    translate([x_center, circle_center_y, pocket_z])
+        cylinder(h = keyhole_depth, r = head_r, $fn = 48);
+    translate([x_center - head_r,
+               circle_center_y,
+               pocket_z])
+        cube([keyhole_head_diameter,
+              keyhole_neck_length + head_r,
+              keyhole_depth]);
+
+    // Back-face opening at the circle: head-diameter hole for
+    // screw head entry through the build-plate side.
+    translate([x_center, circle_center_y,
+               underside_z - keyhole_margin])
+        cylinder(h = keyhole_margin + 0.1, r = head_r, $fn = 48);
+
+    // Back-face shaft slot along the neck: only neck-width so
+    // the wider screw head is captured inside the pocket.
+    translate([x_center - keyhole_neck_width / 2,
+               circle_center_y,
+               underside_z - keyhole_margin])
+        cube([keyhole_neck_width,
+              keyhole_neck_length + head_r,
+              keyhole_margin + 0.1]);
+}
+
+module keyhole_cutouts() {
+    if (keyhole_enabled && keyhole_depth > 0) {
+        for (i = [0 : len(keyhole_positions) - 1])
+            keyhole_cutout(keyhole_positions[i]);
+    }
+}
+
+module keyhole_opening_2d(position) {
+    x_center = keyhole_position_x(position);
+    slot_top = keyhole_position_slot_top(position);
+    head_r = keyhole_head_diameter / 2;
+    circle_center_y = slot_top - keyhole_neck_length - head_r;
+    union() {
+        translate([x_center, circle_center_y])
+            circle(r = head_r, $fn = 48);
+        translate([x_center - keyhole_neck_width / 2,
+                   circle_center_y])
+            square([keyhole_neck_width,
+                    keyhole_neck_length + head_r]);
+    }
+}
+
+module dowel_hole_x(face_x, y_center, direction) {
+    radius = dowel_hole_diameter / 2;
+    translate([face_x, y_center, base_height / 2])
+        rotate([0, direction > 0 ? 90 : -90, 0])
+            cylinder(h = dowel_hole_depth + 0.1, r = radius, $fn = 48);
+    translate([face_x, y_center, base_height / 2])
+        rotate([0, direction > 0 ? 90 : -90, 0])
+            cylinder(h = dowel_hole_chamfer + 0.1,
+                     r1 = radius + dowel_hole_chamfer,
+                     r2 = radius,
+                     $fn = 48);
+}
+
+module dowel_hole_y(face_y, x_center, direction) {
+    radius = dowel_hole_diameter / 2;
+    translate([x_center, face_y, base_height / 2])
+        rotate([direction > 0 ? -90 : 90, 0, 0])
+            cylinder(h = dowel_hole_depth + 0.1, r = radius, $fn = 48);
+    translate([x_center, face_y, base_height / 2])
+        rotate([direction > 0 ? -90 : 90, 0, 0])
+            cylinder(h = dowel_hole_chamfer + 0.1,
+                     r1 = radius + dowel_hole_chamfer,
+                     r2 = radius,
+                     $fn = 48);
+}
+
+module dowel_hole_cutouts() {
+    if (dowel_enabled && base_height >= dowel_hole_diameter + 2 * dowel_min_wall) {
+        for (offset = dowel_east_positions)
+            dowel_hole_x(tile_x0() + tile_w(), tile_y0() + offset, -1);
+        for (offset = dowel_west_positions)
+            dowel_hole_x(tile_x0(), tile_y0() + offset, 1);
+        for (offset = dowel_north_positions)
+            dowel_hole_y(tile_y0() + tile_h(), tile_x0() + offset, -1);
+        for (offset = dowel_south_positions)
+            dowel_hole_y(tile_y0(), tile_x0() + offset, 1);
+    }
+}
+
+module keyhole_outline() {
+    if (keyhole_enabled && len(keyhole_positions) > 0) {
+        translate([0, 0, base_height - keyhole_outline_thickness])
+            linear_extrude(height = keyhole_outline_thickness)
+                difference() {
+                    union() {
+                        for (i = [0 : len(keyhole_positions) - 1])
+                            offset(delta = keyhole_outline_width)
+                                keyhole_opening_2d(keyhole_positions[i]);
+                    }
+                    union() {
+                        for (i = [0 : len(keyhole_positions) - 1])
+                            keyhole_opening_2d(keyhole_positions[i]);
+                    }
+                }
+    }
+}
+
+module base_plate() {
+    union() {
+        difference() {
+            clipped_base_shape();
+            keyhole_cutouts();
+            dowel_hole_cutouts();
+        }
+    }
+}

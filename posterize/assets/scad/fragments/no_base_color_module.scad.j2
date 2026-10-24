@@ -1,0 +1,11 @@
+
+module clipped_color_layer(svg_file) {
+    if (plate_w <= {{ unclipped_plate_w }}) {
+        color_layer(svg_file);
+    } else {
+        intersection() {
+            tile_region(raised_height + {{ clip_z_slop_mm }});
+            color_layer(svg_file);
+        }
+    }
+}

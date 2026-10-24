@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")/.."
+uv lock --upgrade-package bambu3mf --quiet
+uv sync --upgrade-package bambu3mf --quiet
+exec uv run posterize "$@"

@@ -1,0 +1,13 @@
+build/
+output/
+tmp/
+.venv/
+__pycache__/
+
+# agent-manager (generated)
+.claude/skills/
+.agents/skills/
+
+.worktrees/
+images/
+
